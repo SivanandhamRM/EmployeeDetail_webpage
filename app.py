@@ -1,8 +1,7 @@
+#import libraries
 from flask import Flask, request, render_template, url_for, redirect
-# import mysql.connector
 import sqlite3
 from sql_func import init_db
-
 from sql_func import get_employee_values, get_dept_values, update_dept, deleteuser, new_user
 
 app = Flask(__name__, template_folder = 'template')
