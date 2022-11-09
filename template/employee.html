@@ -1,0 +1,208 @@
+<html lang="en"><head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script><style></style>
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Employee Details</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8"><h2>Employee <b>Details</b></h2></div>
+                    <div class="col-sm-4 text-center">
+                        <button type="button" class="btn btn-info add-new" title="add" data-toggle="modal" data-target="#addmodal"style="margin-top: 20px; margin-bottom: 10px;"><i class="fa fa-plus"></i> Add New</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="editmodal" role="dialog">
+                <div class="modal-dialog modal-sm">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Department</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('employee') }}" method="post">
+                            <label for="department">Department</label><br>
+                            <select name="departments" id="department">
+                                {% for dept in d_result %}
+                                <option value="{{ dept['department'] }}">{{ dept['department'] }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                            <input type="hidden" name="row_edit" id="row_edit" value="" />
+                            <input type="hidden" name="edit" id="edit" value="yes" />
+                          
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" value="Submit" />
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                  </div>
+                </div>
+
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="deletemodal" role="dialog">
+                <div class="modal-dialog modal-sm">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete User</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('employee') }}" method="post">
+                            <label >Are you sure you want to delete the user?</label><br>
+                            <input type="hidden" name="row_delete" id="row_delete" value="" />
+                            <input type="hidden" name="delete" id="delete" value="yes" />
+                            
+                        
+                        </div>
+                    <div class="modal-footer"> 
+                        <input type="submit" value="Yes" />
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="addmodal" role="dialog">
+                <div class="modal-dialog modal-sm">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add New User</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    </div>
+                    <div class="modal-body">
+                      <form action="{{ url_for('employee') }}" method="post">
+                        <label for="fname">First Name:</label><br>
+                        <input type="text" id="fname" name="fname" required><br><br>
+
+                        <label for="lname">Last Name:</label><br>
+                        <input type="text" id="lname" name="lname"><br><br>
+
+                        <label for="email">Email:</label><br>
+                        <input type="email" id="email" name="email" required><br><br>
+
+                        <label for="phone">Phone Number:</label><br>
+                        <input type="number" id="phone" name="phone"><br><br>
+
+                        <label for="salary">Salary:</label><br>
+                        <input type="number" id="salary" name="salary"><br><br>
+
+                        <label for="department">Department</label><br>
+                        <select name="department" id="department">
+                            {% for dept in d_result %}
+                            <option value="{{ dept['department'] }}">{{ dept['department'] }}</option>
+                            {% endfor %}
+                        </select>
+                        <br><br>
+                        <input type="submit" value="Add" />
+
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+
+
+
+
+
+            <table class="table table-bordered" id="employee_table">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Salary</th>
+                        <th>Department</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for value in result %}
+                    <tr>
+                        <td style="display: none;">{{ value['rowid'] }}</td>
+                        <td>{{ value['fname'] }}</td>
+                        <td>{{ value['lname'] }}</td>
+                        <td>{{ value['email'] }}</td>
+                        <td>{{ value['phone'] }}</td>
+                        <td>{{ value['salary'] }}</td>
+                        <td>{{ value['department'] }}</td>
+                        <td>
+                            <button onclick="get_rowid({{ loop.index }})">
+                                <a class="edit" title="edit" data-toggle="modal" data-target="#editmodal"><i class="material-icons">edit</i></a>
+                            </button>
+
+                            <button onclick="del_get_rowid({{ loop.index }})">
+                                <a class="delete" title="delete" data-toggle="modal" data-target="#deletemodal"><i class="material-icons">delete</i></a>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+            <script type="text/javascript">
+                function get_rowid(id) {
+                    var table = document.getElementById('employee_table');
+                    var tr = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr')[id-1]
+
+                    var e_id = tr.getElementsByTagName('td')[0].textContent;
+
+                    var rownum = document.getElementById('row_edit');
+                    rownum.value = e_id;
+
+                    
+                    console.log(table, tr, e_id, rownum);
+                }
+
+                function del_get_rowid(id) {
+                    var table = document.getElementById('employee_table');
+                    var tr = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr')[id-1]
+
+                    var e_id = tr.getElementsByTagName('td')[0].textContent;
+
+                    var rownum = document.getElementById('row_delete');
+                    rownum.value = e_id;
+
+                    console.log(e_id);
+                    console.log(rownum);
+                }
+            </script>
+
+        </div>
+    </div>
+
+    <script type="text/javascript"></script>
+</body>
+</html>
