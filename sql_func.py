@@ -1,19 +1,9 @@
-# import mysql.connector
 import os
 import sqlite3
 
 
-
-# config = {
-#     'user': 'sivanandham',
-#     'password': 'password',
-#     'host': 'localhost',
-#     'port': '3306',
-#     'database': 'rails' 
-# }
-
-
 def init_db():
+    #connecting to existing database, if database not exists, it creates a new database.
     conn = sqlite3.connect('details.db')
     cursor = conn.cursor()
     print("Database created and opened successfully")
@@ -25,6 +15,7 @@ def init_db():
 
         print('Dept database created successfully')
 
+    #insert Dept data
         cursor.execute("insert into Dept values ('Finance')");
         cursor.execute("insert into Dept values ('Booking')");
         cursor.execute("insert into Dept values ('Maintenance')");
@@ -34,7 +25,7 @@ def init_db():
     except:
         pass
 
-
+    #create Employee table
     try:
         cursor.execute('''CREATE TABLE Employee
             (rowid INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,10 +38,7 @@ def init_db():
             FOREIGN KEY (department)
             REFERENCES Dept(department));''')
 
-        print('Employee database created successfully')
-
-        #Insert Data into Dept database
-        
+        print('Employee database created successfully')      
 
 
         #Insert data into Employee table
@@ -70,25 +58,7 @@ def init_db():
     conn.close()
 
 
-# def init_db():
-#     global config
-#     connection = mysql.connector.connect(**config)
-#     cursor = connection.cursor()
-
-#     with open("db.sql", 'r') as file1:
-#         sql_cmds = file1.read()
-
-#     sql_cmds1 = sql_cmds.split(";")
-
-#     for i in range(0, len(sql_cmds1)-1):
-#         query = sql_cmds1[i] + ';'
-#         cursor.execute(query)
-
-#     connection.commit()
-#     cursor.close()
-#     connection.close()
-
-
+#function to insert new user into Employee data
 def new_user(fname, lname, email, phone, salary, department):
 
     conn = sqlite3.connect('details.db')
@@ -98,23 +68,7 @@ def new_user(fname, lname, email, phone, salary, department):
     conn.close()
 
 
-    # global config
-    # connection = mysql.connector.connect(**config)
-
-    # print('**************************************************', department)
-    # cursor = connection.cursor()
-    # query = (
-    #     f"INSERT INTO Employee "
-    #     "(fname, lname, email, phone, salary, department)"
-    #     "VALUES (%s, %s, %s, %s, %s, %s)"
-    # )
-    # cursor.execute(query, (fname, lname, email, phone, salary, department))
-    # connection.commit()
-    # cursor.close()
-
-    # connection.close()
-
-
+#function to update the department value
 def update_dept(e_id, newdept):
 
     conn = sqlite3.connect('details.db')
@@ -129,26 +83,8 @@ def update_dept(e_id, newdept):
     conn.commit()
     conn.close()
 
-    # global config
-    # connection = mysql.connector.connect(**config)
 
-    # cursor = connection.cursor()
-
-    # query = (
-    #     "UPDATE Employee "
-    #     "SET department = %s "
-    #     "WHERE e_id = %s"
-    # )
-
-
-    # cursor.execute(query, (newdept, e_id))
-    # connection.commit()
-    # cursor.close()
-
-    # connection.close()
-
-
-
+#function to delete the record in Employee table
 def deleteuser(e_id):
 
     conn = sqlite3.connect('details.db')
@@ -160,23 +96,7 @@ def deleteuser(e_id):
     conn.close()
     
 
-
-    # global config
-    # connection = mysql.connector.connect(**config)
-
-    # cursor = connection.cursor()
-    # query = f"DELETE FROM Employee WHERE e_id = {e_id}"
-    # print(query)
-
-
-    # cursor.execute(query)  
-    # connection.commit()
-    # cursor.close()
-
-    # connection.close()
-
-
-
+#function to read Employee table records
 def get_employee_values():
     conn = sqlite3.connect('details.db')
     cursor = conn.cursor()
@@ -194,6 +114,8 @@ def get_employee_values():
     conn.close()
     return json_data
 
+
+#function to read Dept table records
 def get_dept_values():
     conn = sqlite3.connect('details.db')
     cursor = conn.cursor()
@@ -209,24 +131,3 @@ def get_dept_values():
 
     conn.close()
     return json_data
-
-
-
-    # global config
-    # connection = mysql.connector.connect(**config)
-
-    # cursor = connection.cursor()
-    # cursor.execute(f'SELECT * FROM {table};')
-
-    # row_headers = [x[0] for x in cursor.description] 
-    # result = cursor.fetchall()
-    # json_data = []
-
-    # for res in result:
-    #     res = list(res)
-    #     json_data.append(dict(zip(row_headers, res)))
-
-    # cursor.close()
-    # connection.close()
-    # return json_data
-
