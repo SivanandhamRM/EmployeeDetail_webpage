@@ -12,4 +12,4 @@ I have done a webpage where we can display, add and delete the details of employ
 
 * templates folder contain HTML and CSS files.
 
-After downloading the folder in your local system, navigate to the respective folder and run **python app.py** in command prompt.
+After downloading the folder in your local system, navigate to the respective folder and run **python app.py** in command prompt, it will show the packages to download or use an virtual environment and run **python app.py**. Cilck the link provided in the output to open the webpage.
